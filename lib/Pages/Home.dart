@@ -102,6 +102,13 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
           builder: (context, state) {
             var horizontal = MediaQuery.of(context).size.aspectRatio > 1.0;
             // // var videoPlayer = Container(color: Theme.of(context).primaryColor);
+
+            if (state is StreamOverlayOpened && horizontal) {
+              SystemChrome.setEnabledSystemUIOverlays([]);
+            } else {
+              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+            }
+
             var videoPlayer = state is StreamOverlayOpened
                 ? WebView(
                     initialUrl: 'https://player.twitch.tv/?channel=${state.channelName}&enableExtensions=true&muted=false&parent=pornhub.com',
@@ -109,12 +116,6 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                     allowsInlineMediaPlayback: true,
                   )
                 : null;
-
-            if (horizontal) { // Disable statusbar when in horizontal mode
-              SystemChrome.setEnabledSystemUIOverlays([]);
-            } else {
-              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-            }
 
             var scaffold = Scaffold(
               extendBody: true,
