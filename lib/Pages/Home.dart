@@ -10,6 +10,7 @@ import 'package:chatsen/Settings/SettingsEvent.dart';
 import 'package:chatsen/Settings/SettingsState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/Components/ChannelJoinModal.dart';
 import '/Components/HomeDrawer.dart';
@@ -108,6 +109,12 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                     allowsInlineMediaPlayback: true,
                   )
                 : null;
+
+            if (horizontal) { // Disable statusbar when in horizontal mode
+              SystemChrome.setEnabledSystemUIOverlays([]);
+            } else {
+              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+            }
 
             var scaffold = Scaffold(
               extendBody: true,
@@ -265,12 +272,12 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                     ? Row(
                         children: [
                           Expanded(
-                            child: SafeArea(child: videoPlayer!),
+                            child: SafeArea(left: false, child: videoPlayer!),
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(0.0),
                             child: SizedBox(
-                              width: 340.0,
+                              width: 245.0,
                               child: scaffold,
                             ),
                           ),
