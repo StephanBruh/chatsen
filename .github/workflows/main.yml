@@ -7,7 +7,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{secrets.GHKEY}}
           path: chatsen
 
       - uses: actions/setup-java@v1
