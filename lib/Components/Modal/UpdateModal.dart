@@ -60,7 +60,7 @@ class UpdateModal extends StatelessWidget {
 
   static Future<bool> hasUpdate() async {
     if (kPlayStoreRelease) return false;
-    var releases = await GithubReleaseProvider('chatsen/chatsen').getReleases();
+    var releases = await GithubReleaseProvider('stephanbruh/chatsen').getReleases();
     releases.sort((a1, a2) => a1.version!.compareTo(a2.version));
     var packageInfo = await PackageInfo.fromPlatform();
     var currentReleaseVersion = Version.parse('${packageInfo.version}+${packageInfo.buildNumber}');
@@ -71,7 +71,7 @@ class UpdateModal extends StatelessWidget {
   static void searchForUpdate(BuildContext context) async {
     if (kPlayStoreRelease) return;
 
-    var releases = await GithubReleaseProvider('chatsen/chatsen').getReleases();
+    var releases = await GithubReleaseProvider('stephanbruh/chatsen').getReleases();
     releases.sort((a1, a2) => a1.version!.compareTo(a2.version));
 
     var packageInfo = await PackageInfo.fromPlatform();
