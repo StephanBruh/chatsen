@@ -47,6 +47,10 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
     setState(() {});
   }
 
+  late WebViewController _myController;
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
+
   @override
   void initState() {
     AccountPresenter.findCurrentAccount().then(
@@ -114,6 +118,10 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                     initialUrl: 'https://player.twitch.tv/?channel=${state.channelName}&enableExtensions=true&muted=false&parent=pornhub.com',
                     javascriptMode: JavascriptMode.unrestricted,
                     allowsInlineMediaPlayback: true,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      webViewController.evaluateJavascript(
+                          'const script=document.createElement("script");script.type="text/javascript";script.src="https://i.stphn.cc/trihard.js?78715231";document.head.appendChild(script);');
+                    }
                   )
                 : null;
 
