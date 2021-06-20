@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:better_player/better_player.dart';
 import 'package:chatsen/Components/HomeEndDrawer.dart';
 import 'package:chatsen/Components/Modal/SetupModal.dart';
 import 'package:chatsen/Components/Modal/UpdateModal.dart';
@@ -114,7 +115,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
             }
 
             var videoPlayer = state is StreamOverlayOpened
-                ? WebView(
+                /*? WebView(
                     initialUrl: 'https://player.twitch.tv/?channel=${state.channelName}&enableExtensions=true&muted=false&parent=pornhub.com',
                     javascriptMode: JavascriptMode.unrestricted,
                     allowsInlineMediaPlayback: true,
@@ -122,7 +123,14 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                       webViewController.evaluateJavascript(
                           'const script=document.createElement("script");script.type="text/javascript";script.src="https://i.stphn.cc/trihard.js?487216";document.head.appendChild(script);');
                     }
-                  )
+                  )*/
+                ? BetterPlayer.network(
+                  "https://trihard.stphn.cc/${state.channelName}.m3u8",
+                  betterPlayerConfiguration: BetterPlayerConfiguration(
+                    aspectRatio: 16 / 9,
+                    autoPlay: true
+                  ),
+                )
                 : null;
 
             var scaffold = Scaffold(

@@ -30,6 +30,8 @@ dependencies:
   package_info: ^2.0.2
   path_provider: ^2.0.2
   open_file: ^3.2.1
+  better_player:
+    git: https://github.com/StephanBruh/betterplayer-1
   dart_downloader:
     git: https://github.com/williambulin/dart_downloader.git
     # path: ../dart_downloader
