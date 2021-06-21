@@ -25,7 +25,7 @@ class UploadModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'You are about to upload ${file.fileName} to https://catbox.moe and share the link in ${channel.name}',
+            'You are about to upload ${file.fileName} to https://i.nuuls.com and share the link in ${channel.name}',
             style: Theme.of(context).textTheme.headline6,
           ),
           SizedBox(height: 16.0),
@@ -43,7 +43,7 @@ class UploadModal extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () async {
                 Navigator.of(context).pop();
-                var request = http.MultipartRequest('POST', Uri.parse('https://catbox.moe/user/api.php'));
+                var request = http.MultipartRequest('POST', Uri.parse('https://i.nuuls.com/upload'));
                 request.files.add(
                   http.MultipartFile.fromBytes(
                     'fileToUpload',
@@ -54,6 +54,7 @@ class UploadModal extends StatelessWidget {
                 );
                 request.fields['reqtype'] = 'fileupload';
                 var response = await request.send();
+                print(response);
                 var responseBody = await response.stream.bytesToString();
                 if (response.statusCode == 200) channel.send(responseBody);
                 print('Upload: $responseBody');
