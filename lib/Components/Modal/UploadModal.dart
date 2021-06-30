@@ -25,7 +25,7 @@ class UploadModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'You are about to upload ${file.fileName} to https://catbox.moe and share the link in ${channel.name}',
+            'You are about to upload ${file.fileName} to https://i.nuuls.com and share the link in ${channel.name}',
             style: Theme.of(context).textTheme.headline6,
           ),
           SizedBox(height: 16.0),
@@ -33,7 +33,7 @@ class UploadModal extends StatelessWidget {
             Center(
               child: Image.memory(
                 file.toUint8List(),
-                height: 300.0,
+                height: MediaQuery.of(context).size.height / 5,
               ),
             ),
             SizedBox(height: 16.0),
@@ -43,7 +43,7 @@ class UploadModal extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: () async {
                 Navigator.of(context).pop();
-                var request = http.MultipartRequest('POST', Uri.parse('https://catbox.moe/user/api.php'));
+                var request = http.MultipartRequest('POST', Uri.parse('https://i.nuuls.com/upload'));
                 request.files.add(
                   http.MultipartFile.fromBytes(
                     'fileToUpload',
@@ -85,9 +85,9 @@ class UploadModal extends StatelessWidget {
   }
 
   static Future<void> show(
-    BuildContext context, {
-    required twitch.Channel channel,
-  }) async {
+      BuildContext context, {
+        required twitch.Channel channel,
+      }) async {
     var selectedFile = await FilePickerCross.importFromStorage(type: FileTypeCross.any);
     await BlurModal.show(
       context: context,
