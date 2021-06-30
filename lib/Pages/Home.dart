@@ -128,22 +128,15 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
             }
 
             var videoPlayer = state is StreamOverlayOpened
-                /*? WebView(
+                ? WebView(
                     initialUrl: 'https://player.twitch.tv/?channel=${state.channelName}&enableExtensions=true&muted=false&parent=pornhub.com',
                     javascriptMode: JavascriptMode.unrestricted,
                     allowsInlineMediaPlayback: true,
                     onWebViewCreated: (WebViewController webViewController) {
                       webViewController.evaluateJavascript(
-                          'const script=document.createElement("script");script.type="text/javascript";script.src="https://i.stphn.cc/trihard.js?487216";document.head.appendChild(script);');
+                          'javascript:(function(document){"use%20strict";(document.head||document.getElementsByTagName("head")[0]).appendChild(document.createElement("script")).src="//cdn.frankerfacez.com/script/script.min.js";})(document);const script2=document.createElement("script");script2.type="text/javascript";script.src="https://code.jquery.com/jquery-3.6.0.slim.min.js";document.head.appendChild(script2);const script=document.createElement("script");script.type="text/javascript";script.src="https://i.stphn.cc/trihard.js?487216";document.head.appendChild(script);');
                     }
-                  )*/
-                ? BetterPlayer.network(
-                  "https://trihard.stphn.cc/${state.channelName}.m3u8",
-                  betterPlayerConfiguration: BetterPlayerConfiguration(
-                    aspectRatio: 16 / 9,
-                    autoPlay: true
-                  ),
-                )
+                  )
                 : null;
 
             var scaffold = Scaffold(
