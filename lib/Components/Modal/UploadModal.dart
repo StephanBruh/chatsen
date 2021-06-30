@@ -165,9 +165,9 @@ class UploadModal extends StatelessWidget {
   }
 
   static Future<void> show(
-    BuildContext context, {
-    required twitch.Channel channel,
-  }) async {
+      BuildContext context, {
+        required twitch.Channel channel,
+      }) async {
     var selectedFile = await FilePickerCross.importFromStorage(type: FileTypeCross.any);
     await BlurModal.show(
       context: context,

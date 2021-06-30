@@ -52,18 +52,18 @@ class HomeDrawer extends StatelessWidget {
                                 onPressed: () async => (BlocProvider.of<StreamOverlayBloc>(context).state is StreamOverlayClosed) ? BlocProvider.of<StreamOverlayBloc>(context).add(StreamOverlayOpen(channelName: channel!.name!.substring(1))) : BlocProvider.of<StreamOverlayBloc>(context).add(StreamOVerlayClose()), //launch('https://twitch.tv/${channel.name.substring(1)}'),
                                 tooltip: 'Open current channel\'s stream',
                               ),
-                            if (channel != null)
-                              IconButton(
-                                icon: Icon(Icons.search),
-                                onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) => SearchPage(
-                                      channel: channel,
-                                    ),
-                                  ),
-                                ),
-                                tooltip: 'Search in the current channel',
-                              ),
+                            // if (channel != null)
+                            //   IconButton(
+                            //     icon: Icon(Icons.search),
+                            //     onPressed: () => Navigator.of(context).push(
+                            //       MaterialPageRoute(
+                            //         builder: (BuildContext context) => SearchPage(
+                            //           channel: channel,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     tooltip: 'Search in the current channel',
+                            //   ),
                             if (channel != null)
                               Container(
                                 width: 1.0,
