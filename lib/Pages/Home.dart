@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
     if ((BlocProvider.of<Settings>(context).state as SettingsLoaded).notificationOnMention && message.mention) {
       NotificationWrapper.of(context)!.sendNotification(
         payload: message.body,
-        title: message.user!.login,
+        title: '[${channel!.name}] ${message.user!.login}',
         subtitle: message.body,
       );
     }
