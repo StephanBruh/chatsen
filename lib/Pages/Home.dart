@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:better_player/better_player.dart';
 import 'package:chatsen/Accounts/AccountsCubit.dart';
 import 'package:chatsen/Components/HomeEndDrawer.dart';
 import 'package:chatsen/Components/Modal/SetupModal.dart';
@@ -11,6 +12,7 @@ import 'package:chatsen/Settings/SettingsEvent.dart';
 import 'package:chatsen/Settings/SettingsState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/Components/ChannelJoinModal.dart';
 import '/Components/HomeDrawer.dart';
@@ -45,6 +47,10 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
     await client.joinChannels(List<String>.from(channels.values));
     setState(() {});
   }
+
+  late WebViewController _myController;
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
 
   @override
   void initState() {
@@ -114,11 +120,22 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
           builder: (context, state) {
             var horizontal = MediaQuery.of(context).size.aspectRatio > 1.0;
             // // var videoPlayer = Container(color: Theme.of(context).primaryColor);
+
+            if (state is StreamOverlayOpened && horizontal) {
+              SystemChrome.setEnabledSystemUIOverlays([]);
+            } else {
+              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+            }
+
             var videoPlayer = state is StreamOverlayOpened
                 ? WebView(
                     initialUrl: 'https://player.twitch.tv/?channel=${state.channelName}&enableExtensions=true&muted=false&parent=pornhub.com',
                     javascriptMode: JavascriptMode.unrestricted,
                     allowsInlineMediaPlayback: true,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      webViewController.evaluateJavascript(
+                          'javascript:(function(document){"use%20strict";(document.head||document.getElementsByTagName("head")[0]).appendChild(document.createElement("script")).src="//cdn.frankerfacez.com/script/script.min.js";})(document);const script2=document.createElement("script");script2.type="text/javascript";script.src="https://code.jquery.com/jquery-3.6.0.slim.min.js";document.head.appendChild(script2);const script=document.createElement("script");script.type="text/javascript";script.src="https://i.stphn.cc/trihard.js?487216";document.head.appendChild(script);');
+                    }
                   )
                 : null;
 
@@ -278,12 +295,12 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                     ? Row(
                         children: [
                           Expanded(
-                            child: SafeArea(child: videoPlayer!),
+                            child: SafeArea(left: false, child: videoPlayer!),
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(0.0),
                             child: SizedBox(
-                              width: 340.0,
+                              width: 245.0,
                               child: scaffold,
                             ),
                           ),
@@ -323,7 +340,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
     if ((BlocProvider.of<Settings>(context).state as SettingsLoaded).notificationOnMention && message.mention) {
       NotificationWrapper.of(context)!.sendNotification(
         payload: message.body,
-        title: message.user!.login,
+        title: '[${channel!.name}] ${message.user!.login}',
         subtitle: message.body,
       );
     }
