@@ -249,7 +249,7 @@ class ChatMessage extends StatelessWidget {
                     //         ),
                     //       ),
                     //     ),
-                    for (var badge in message.badges + BlocProvider.of<FFZBadges>(context).getBadgesForUser('${message.user?.login?.toLowerCase()}') + BlocProvider.of<FFZAPBadges>(context).getBadgesForUser('${message.user?.id}') + BlocProvider.of<ChatterinoBadges>(context).getBadgesForUser('${message.user?.id}') + BlocProvider.of<SevenTVBadges>(context).getBadgesForUser('${message.user?.id}') + BlocProvider.of<ChatsenBadges>(context).getBadgesForUser('${message.user?.id}'))
+                    for (var badge in BlocProvider.of<ChatsenBadges>(context).getBadgesForUser('${message.user?.id}') + BlocProvider.of<SevenTVBadges>(context).getBadgesForUser('${message.user?.id}') + message.badges + BlocProvider.of<ChatterinoBadges>(context).getBadgesForUser('${message.user?.id}'))
                       WidgetSpan(
                         child: WidgetTooltip(
                           message: Padding(
