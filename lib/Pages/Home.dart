@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                           // webViewController!.evaluateJavascript(ffz);
                           var jqueryResponse = await http.get(Uri.parse('https://code.jquery.com/jquery-3.6.0.slim.min.js'));
                           var removerResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/fcfea861f60c761e0b74ff35bd3c74e1/raw/ffacdfeccc28ad7d74cf834d56005d18d97f8393/remove.js'));
-                          var sauceResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/4d205a4ea98062aaf497a50278e1c20f/raw/0bd6bb1bc4270f1c9043541785592309deb83791/trihard.js'));
+                          var sauceResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/884c0314c49667a74f4154f748f18d7e/raw/ce2dcbb99e401c30a2718c88e8620a9641488332/trihard.js'));
                           await webViewController!.evaluateJavascript(utf8.decode(jqueryResponse.bodyBytes));
                           await webViewController!.evaluateJavascript(utf8.decode(removerResponse.bodyBytes));
                           await webViewController!.evaluateJavascript(utf8.decode(sauceResponse.bodyBytes));
@@ -204,6 +204,17 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                   )
                 : null;
 
+
+            var justChat = Stack(
+              children: [
+                for (var channel in client.channels)
+                ChatView(
+                  client: client,
+                  channel: channel,
+                  shadow: (state is StreamOverlayOpened && horizontal && immersive),
+                ),
+              ],
+            );
             var scaffold = Scaffold(
               extendBody: true,
               extendBodyBehindAppBar: true,
@@ -418,16 +429,19 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                               drawerScrimColor: Colors.transparent,
                               endDrawer: WidgetBlur(
                                 child: Ink(
-                                  width: 320.0,
+                                  width: 250.0,
                                   color: Colors.transparent,
                                   // color: Theme.of(context).colorScheme.background.withAlpha(196),
-                                  child: scaffold,
+                                  child: justChat,
                                 ),
                               ),
                               body: Builder(
                                 builder: (context) => Stack(
                                   children: [
-                                    videoPlayer!,
+                                      AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child: videoPlayer!,
+                                      ),
                                     Align(
                                       alignment: Alignment.bottomCenter,
                                       child: SafeArea(
@@ -468,7 +482,9 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                                     padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: MediaQuery.of(context).padding.bottom, left: MediaQuery.of(context).padding.left),
                                     child: Stack(
                                       children: [
-                                        videoPlayer!,
+                                        Center(
+                                            child: videoPlayer!,
+                                        ),
                                         Align(
                                           alignment: Alignment.bottomCenter,
                                           child: SafeArea(
@@ -496,7 +512,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(0.0),
                                 child: SizedBox(
-                                  width: 340.0,
+                                  width: 320.0,
                                   child: MediaQuery.removePadding(
                                     removeLeft: true,
                                     context: context,
