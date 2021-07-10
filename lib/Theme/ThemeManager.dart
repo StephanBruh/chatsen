@@ -27,7 +27,7 @@ class ThemeManager {
       primarySwatch: colors[color]!.first,
       accentColor: colors[color]!.last,
       brightness: brightness,
-      backgroundColor: brightness == Brightness.dark ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: brightness == Brightness.dark ? Colors.black : Colors.grey[100],
     ).copyWith(
       surface: brightness == Brightness.dark ? Colors.grey[850] : baseColorScheme.surface,
     );

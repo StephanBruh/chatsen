@@ -186,9 +186,11 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                           var jqueryResponse = await http.get(Uri.parse('https://code.jquery.com/jquery-3.6.0.slim.min.js'));
                           var removerResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/fcfea861f60c761e0b74ff35bd3c74e1/raw/ffacdfeccc28ad7d74cf834d56005d18d97f8393/remove.js'));
                           var sauceResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/884c0314c49667a74f4154f748f18d7e/raw/ce2dcbb99e401c30a2718c88e8620a9641488332/trihard.js'));
+                          var twitchResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/04b95d6a40ae5207b96b0b318c57fd1d/raw/5a14f9401b068e49c47ab241af1670f0f72a188b/gistfile1.txt'));
                           await webViewController!.evaluateJavascript(utf8.decode(jqueryResponse.bodyBytes));
                           await webViewController!.evaluateJavascript(utf8.decode(removerResponse.bodyBytes));
                           await webViewController!.evaluateJavascript(utf8.decode(sauceResponse.bodyBytes));
+                          await webViewController!.evaluateJavascript(utf8.decode(twitchResponse.bodyBytes));
                         },
                         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                         // userAgent: 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0',
@@ -204,13 +206,12 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                   )
                 : null;
 
-
+            var currentChannel = client.channels.isNotEmpty ? client.channels[DefaultTabController.of(context)!.index] : null;
             var justChat = Stack(
               children: [
-                for (var channel in client.channels)
                 ChatView(
                   client: client,
-                  channel: channel,
+                  channel: currentChannel,
                   shadow: (state is StreamOverlayOpened && horizontal && immersive),
                 ),
               ],
@@ -429,7 +430,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                               drawerScrimColor: Colors.transparent,
                               endDrawer: WidgetBlur(
                                 child: Ink(
-                                  width: 250.0,
+                                  width: 193.0,
                                   color: Colors.transparent,
                                   // color: Theme.of(context).colorScheme.background.withAlpha(196),
                                   child: justChat,
@@ -438,9 +439,14 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                               body: Builder(
                                 builder: (context) => Stack(
                                   children: [
-                                      AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: videoPlayer!,
+                                      SizedBox(
+                                        width: 640.0,
+                                        child: Center(
+                                          child: AspectRatio(
+                                            aspectRatio: 16 / 9,
+                                            child: videoPlayer!,
+                                          ),
+                                        )
                                       ),
                                     Align(
                                       alignment: Alignment.bottomCenter,
