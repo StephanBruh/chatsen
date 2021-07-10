@@ -82,6 +82,10 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
     setState(() {});
   }
 
+  late WebViewController _myController;
+  final Completer<WebViewController> _controller =
+  Completer<WebViewController>();
+
   @override
   void initState() {
     Future.delayed(Duration(seconds: 2)).then(
@@ -155,12 +159,19 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
           builder: (context, state) {
             var horizontal = MediaQuery.of(context).size.aspectRatio > 1.0;
             // // var videoPlayer = Container(color: Theme.of(context).primaryColor);
+
+            if (state is StreamOverlayOpened && horizontal) {
+              SystemChrome.setEnabledSystemUIOverlays([]);
+            } else {
+              SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+            }
+
             var videoPlayer = state is StreamOverlayOpened
                 ? Stack(
                     children: [
                       WebView(
                         key: keyTest,
-                        initialUrl: 'https://player.twitch.tv/?channel=${state.channelName}&enableExtensions=true&muted=false&parent=chatsen.app',
+                        initialUrl: 'https://twitch.tv/${state.channelName}',
                         javascriptMode: JavascriptMode.unrestricted,
                         allowsInlineMediaPlayback: true,
                         onWebViewCreated: (controller) => webViewController = controller,
@@ -172,12 +183,12 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                         },
                         onPageFinished: (url) async {
                           // webViewController!.evaluateJavascript(ffz);
-                          // var ffzResponse = await http.get(Uri.parse('https://cdn.frankerfacez.com/static/ffz_injector.user.js'));
-                          // print(await webViewController!.evaluateJavascript(utf8.decode(ffzResponse.bodyBytes)));
-                          await webViewController!.evaluateJavascript('''
-                            document.getElementsByClassName("video-player__overlay")[0].hidden = true;
-                            document.getElementsByTagName("video")[0].controls = true;
-                          ''');
+                          var jqueryResponse = await http.get(Uri.parse('https://code.jquery.com/jquery-3.6.0.slim.min.js'));
+                          var removerResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/fcfea861f60c761e0b74ff35bd3c74e1/raw/ffacdfeccc28ad7d74cf834d56005d18d97f8393/remove.js'));
+                          var sauceResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/4d205a4ea98062aaf497a50278e1c20f/raw/0bd6bb1bc4270f1c9043541785592309deb83791/trihard.js'));
+                          await webViewController!.evaluateJavascript(utf8.decode(jqueryResponse.bodyBytes));
+                          await webViewController!.evaluateJavascript(utf8.decode(removerResponse.bodyBytes));
+                          await webViewController!.evaluateJavascript(utf8.decode(sauceResponse.bodyBytes));
                         },
                         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                         // userAgent: 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0',
@@ -186,10 +197,6 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                         child: Listener(
                           behavior: HitTestBehavior.translucent,
                           onPointerDown: (e) {
-                            webViewController!.evaluateJavascript('''
-                                document.getElementsByClassName("video-player__overlay")[0].hidden = true;
-                                document.getElementsByTagName("video")[0].controls = true;
-                              ''');
                           },
                         ),
                       ),
@@ -533,7 +540,7 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
     if ((BlocProvider.of<Settings>(context).state as SettingsLoaded).notificationOnMention && message.mention) {
       NotificationWrapper.of(context)!.sendNotification(
         payload: message.body,
-        title: message.user!.login,
+        title: '[${channel!.name}] ${message.user!.login}',
         subtitle: message.body,
       );
     }
@@ -619,9 +626,9 @@ class Tutorial extends StatelessWidget {
                   ),
                   SizedBox(height: 8.0),
                   ElevatedButton.icon(
-                    onPressed: () async => await client.joinChannels(['#forsen']),
+                    onPressed: () async => await client.joinChannels(['#nymn']),
                     icon: Icon(Icons.chat),
-                    label: Text('Join #forsen'),
+                    label: Text('Join #nymn'),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0))),
                       padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0 / 2.0)),

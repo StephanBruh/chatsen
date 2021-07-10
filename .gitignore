@@ -17,3 +17,4 @@
 !/analysis_options.yaml
 !/pubspec.yaml
 !/.gitignore
+!/android/app/src/main/res/drawable/notification_icon.png
