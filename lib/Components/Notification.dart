@@ -51,7 +51,7 @@ class _NotificationWrapperState extends State<NotificationWrapper> {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin()
       ..initialize(
         InitializationSettings(
-          android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+          android: AndroidInitializationSettings('notification_icon'),
           iOS: IOSInitializationSettings(),
         ),
         onSelectNotification: onSelectNotification,

@@ -1,7 +1,7 @@
 name: chatsen
 description: A new Flutter project.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev using `pub publish`
-version: 1.0.38+36
+version: 1.0.48+43
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -25,7 +25,10 @@ dependencies:
   version: ^2.0.0
   package_info: ^2.0.2
   path_provider: ^2.0.2
+  smart_select: ^4.3.2
   open_file: ^3.2.1
+  better_player:
+    git: https://github.com/StephanBruh/betterplayer-1
   dart_downloader:
     git: https://github.com/williambulin/dart_downloader.git
     # path: ../dart_downloader
