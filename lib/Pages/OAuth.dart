@@ -107,7 +107,8 @@ class _OAuthPageState extends State<OAuthPage> {
                   );
                 }
 
-                // await webViewController.clearCache(); simple donk fix to be loggedin when into player webview
+                await webViewController.clearCache();
+                await cookieManager.clearCookies();
                 print(cookieManager.toString());
               } catch (e) {
                 print(e);
