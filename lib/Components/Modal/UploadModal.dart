@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:chatsen/Components/UI/BlurModal.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart' as http;
 import 'package:flutter_chatsen_irc/Twitch.dart' as twitch;
+import 'package:flutter/services.dart';
 
 class UploadModal extends StatelessWidget {
   // if (lowName.endsWith('.png') || lowName.endsWith('.jpg') || lowName.endsWith('.jpeg') || lowName.endsWith('.apng') || lowName.endsWith('.gif') || lowName.endsWith('.webp'))
@@ -104,7 +106,16 @@ class UploadModal extends StatelessWidget {
                       var response = await request.send();
                       var responseBody = await response.stream.bytesToString();
                       var responseJson = jsonDecode(responseBody);
-                      if (response.statusCode == 200) channel.send(responseJson['data']['link']);
+                      // if (response.statusCode == 200) channel.send(responseJson['data']['link']);
+                      if (response.statusCode == 200) {
+                        await Clipboard.setData(ClipboardData(text: responseJson['data']['link'])).then((_){
+                          Fluttertoast.showToast(
+                            msg: "File uploaded, link copied to clipboard",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                          );
+                        });
+                      };
                       print('Upload: $responseBody');
                     },
                     label: Text('imgur'),
@@ -134,7 +145,15 @@ class UploadModal extends StatelessWidget {
                         request.fields['reqtype'] = 'fileupload';
                         var response = await request.send();
                         var responseBody = await response.stream.bytesToString();
-                        if (response.statusCode == 200) channel.send(responseBody);
+                        if (response.statusCode == 200) {
+                          await Clipboard.setData(ClipboardData(text: responseBody)).then((_){
+                            Fluttertoast.showToast(
+                                msg: "File uploaded, link copied to clipboard",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                            );
+                          });
+                        };
                         print('Upload: $responseBody');
                       },
                       label: Text('catbox.moe'),

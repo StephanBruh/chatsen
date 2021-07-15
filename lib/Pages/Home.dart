@@ -184,13 +184,18 @@ class _HomePageState extends State<HomePage> implements twitch.Listener {
                         onPageFinished: (url) async {
                           // webViewController!.evaluateJavascript(ffz);
                           var jqueryResponse = await http.get(Uri.parse('https://code.jquery.com/jquery-3.6.0.slim.min.js'));
-                          var removerResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/8f0b3667dc97723e451167b9e124a8f1/raw/17ac8aaca05a4085af8d669291ffb1cfabf990c9/test.js'));
+                          var removerResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/8f0b3667dc97723e451167b9e124a8f1/raw/71c2c54f083e8e1eabdb358ae8fb1a87170e90ba/test.js'));
                           var trihardResponse = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/884c0314c49667a74f4154f748f18d7e/raw/ce2dcbb99e401c30a2718c88e8620a9641488332/trihard.js'));
-                          var remover2Response = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/64a3db10c7814c6017e7077361a987e5/raw/7b1dd0ed83ae5824b583760ebab0b9e94d1a57cf/bla.js'));
+                          var widehardo = await http.get(Uri.parse('https://gist.githubusercontent.com/StephanBruh/4d205a4ea98062aaf497a50278e1c20f/raw/0bd6bb1bc4270f1c9043541785592309deb83791/trihard.js'));
                           var ffzResponse = await http.get(Uri.parse('https://cdn.frankerfacez.com/static/ffz_injector.user.js'));
+                          var cssResponse = await http.get(Uri.parse('https://github.com/pixeltris/TwitchAdSolutions/raw/master/notify-strip/notify-strip.user.js'));
+                          var pixeltris = await http.get(Uri.parse('https://github.com/pixeltris/TwitchAdSolutions/raw/master/notify-reload/notify-reload.user.js'));
                           await webViewController!.evaluateJavascript(utf8.decode(jqueryResponse.bodyBytes));
                           await webViewController!.evaluateJavascript(utf8.decode(trihardResponse.bodyBytes));
+                          await webViewController!.evaluateJavascript(utf8.decode(widehardo.bodyBytes));
                           await webViewController!.evaluateJavascript(utf8.decode(ffzResponse.bodyBytes));
+                          await webViewController!.evaluateJavascript(utf8.decode(cssResponse.bodyBytes));
+                          await webViewController!.evaluateJavascript(utf8.decode(pixeltris.bodyBytes));
                         },
                         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                         // userAgent: 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0',
