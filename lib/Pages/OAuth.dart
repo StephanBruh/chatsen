@@ -109,6 +109,7 @@ class _OAuthPageState extends State<OAuthPage> {
 
                 await webViewController.clearCache();
                 await cookieManager.clearCookies();
+                print(cookieManager.toString());
               } catch (e) {
                 print(e);
               }
